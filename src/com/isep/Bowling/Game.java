@@ -1,36 +1,43 @@
 package com.isep.Bowling;
 
 public class Game {
-    private final Frame[] frames = new Frame[10];
+    private final Frame[] frames = new Frame[12];
     private int currentRoll = 0;
 
     private boolean isValidRoll(int pins, int currentRoll) {
-        boolean isGoodAmountOfPins;
+        boolean isGoodAmountOfPins = false;
         boolean isGoodAmountOfRolls = currentRoll <= Utils.MAX_ROLLS;
-        if (currentRoll % 2 == 0) {
+
+        //handle two strikes in last frame
+        if (currentRoll == Utils.MAX_ROLLS - 2 || currentRoll == Utils.MAX_ROLLS - 1) {
             isGoodAmountOfPins = pins <= Utils.MAX_PINS;
+
         }
+
         else {
-            int pinsLeft = Utils.MAX_PINS - frames[currentRoll / 2].getFirstThrow();
-            System.out.println("Pins left: " + pinsLeft + "Pins: " + pins);
-            isGoodAmountOfPins = pins <= pinsLeft;
+            if (currentRoll % 2 == 0) {
+                isGoodAmountOfPins = pins <= Utils.MAX_PINS;
+            }
+            if (currentRoll % 2 == 1) {
+                int pinsLeft = Utils.MAX_PINS - frames[currentRoll / 2].getFirstThrow();
+                System.out.println("Pins left: " + pinsLeft + ", Pins: " + pins);
+                isGoodAmountOfPins = pins <= pinsLeft;
+            }
         }
+
         System.out.println("Is good amount of pins: " + isGoodAmountOfPins);
         System.out.println("Is good amount of rolls: " + isGoodAmountOfRolls);
         return (isGoodAmountOfPins && isGoodAmountOfRolls);
     }
 
     private boolean isStrike(int currentRoll) {
+        boolean isStrike = frames[currentRoll / 2].getFirstThrow() == Utils.STRIKE;
         currentRoll = currentRoll + 1;
-        return frames[currentRoll / 2].getFirstThrow() == Utils.STRIKE;
+        return isStrike;
     }
 
     private boolean isSpare(int currentRoll) {
         return frames[currentRoll / 2].getFirstThrow() + frames[currentRoll / 2].getSecondThrow() == Utils.SPARE;
-    }
-
-    public boolean isFinished() {
-        return currentRoll == Utils.MAX_ROLLS;
     }
 
     public void roll(int pins) {
@@ -40,6 +47,9 @@ public class Game {
                 frames[currentRoll / 2].setScore(pins);
                 if (isStrike(currentRoll)) {
                     frames[currentRoll / 2].setIsStrike(true);
+                    if (currentRoll <= Utils.MAX_ROLLS - 2) {
+                        this.currentRoll = currentRoll + 1;
+                    }
                 }
             } else {
                 frames[currentRoll / 2].setSecondThrow(pins);
@@ -60,7 +70,6 @@ public class Game {
     public int score() {
         int totalScore = 0;
         for (int i = 0; i < Utils.MAX_FRAMES; i++) {
-            System.out.println(totalScore);
             Frame currentFrame = frames[i];
             totalScore += currentFrame.getScore();
             if (currentFrame.isStrike() && i < Utils.MAX_FRAMES - 1) {
@@ -77,10 +86,18 @@ public class Game {
                 // Add the next roll to the current frame score
                 totalScore += frames[i + 1].getFirstThrow();
             }
+
+            //Handle case where player makes two strikes in 10th frame
+            if (i == 9 && currentFrame.isStrike() && frames[9].isStrike() && frames[9].getScore() == 10) {
+                totalScore += frames[9].getSecondThrow();
+            }
+            // Handle case where player makes three strikes in 10th frame
+            if (i == 9 && currentFrame.isStrike() && frames[9].isStrike() && frames[9].getScore() == 20) {
+                totalScore += frames[9].getThirdThrow();
+            }
         }
         return totalScore;
     }
-
 
     public Game() {
         for (int i = 0; i < 10; i++) {

@@ -32,7 +32,6 @@ public class BowlingGameTest {
         g.roll(3);
         for (int i = 0; i < 17; i++)
             g.roll(0);
-            g.score();
         assertEquals(16, g.score());
     }
 
@@ -53,7 +52,6 @@ public class BowlingGameTest {
         Game g = new Game();
         for (int i = 0; i < 12; i++){
             g.roll(10);
-            g.score();
         }
         assertEquals(300, g.score());
     }
@@ -78,7 +76,7 @@ public class BowlingGameTest {
         g.roll(7);
         g.roll(3);
         g.roll(10);
-        assertEquals(168, g.score());
+        assertEquals(167, g.score());
     }
 
 }

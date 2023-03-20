@@ -3,6 +3,7 @@ package com.isep.Bowling;
 public class Frame {
     private int firstThrow;
     private int secondThrow;
+    private int thirdThrow;
     private int score;
     private boolean isStrike;
     private boolean isSpare;
@@ -29,6 +30,14 @@ public class Frame {
 
     public int getSecondThrow() {
         return secondThrow;
+    }
+
+    public void setThirdThrow(int thirdThrow) {
+        this.thirdThrow = thirdThrow;
+    }
+
+    public int getThirdThrow() {
+        return thirdThrow;
     }
 
     public void setScore(int score) {
