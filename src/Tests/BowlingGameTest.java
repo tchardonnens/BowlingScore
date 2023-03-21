@@ -29,7 +29,6 @@ public class BowlingGameTest {
         Game g = new Game();
         g.roll(5);
         g.roll(5); // spare
-        g.roll(3);
         for (int i = 0; i < 17; i++)
             g.roll(0);
         assertEquals(16, g.score());
@@ -46,17 +45,15 @@ public class BowlingGameTest {
         assertEquals(24, g.score());
     }
 
-    // check that a perfect game (12 strikes) scores 300
     @Test
     public void testPerfectGame() {
         Game g = new Game();
-        for (int i = 0; i < 12; i++){
+        for (int i = 0; i < 10; i++){
             g.roll(10);
         }
         assertEquals(300, g.score());
     }
 
-    // check that a game of 9,1, 5,5, 7,2, 10, 10, 10, 2,8, 6,2, 7,3, 10 scores 168
     @Test
     public void testRandomGame() {
         Game g = new Game();

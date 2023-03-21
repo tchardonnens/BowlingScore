@@ -5,13 +5,16 @@ public class Frame {
     private int secondThrow;
     private int thirdThrow;
     private int score;
+    private int bonus;
     private boolean isStrike;
     private boolean isSpare;
 
     public Frame() {
         this.firstThrow = Utils.EMPTY;
         this.secondThrow = Utils.EMPTY;
+        this.thirdThrow = Utils.EMPTY;
         this.score = 0;
+        this.bonus = 0;
         this.isStrike = false;
         this.isSpare = false;
     }
@@ -46,6 +49,14 @@ public class Frame {
 
     public int getScore() {
         return score;
+    }
+
+    public void setBonus(int bonus) {
+        this.bonus = bonus;
+    }
+
+    public int getBonus() {
+        return bonus;
     }
 
     public void setIsStrike(boolean isStrike) {
